@@ -13,9 +13,6 @@ const taskSchema = mongoose.Schema({
     type: String,
     required: [true, "La fecha limite es obligatoria"],
   },
-  color: { type: String, default: "#FFFFFF" },
 });
 
-const Task = mongoose.model("Task", taskSchema);
-
-module.exports = Task;
+export const Task = mongoose.model("Task", taskSchema);

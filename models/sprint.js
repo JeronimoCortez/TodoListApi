@@ -11,5 +11,6 @@ const sprintSchema = mongoose.Schema({
       ref: "Task",
     },
   ],
-  color: { type: String, default: "#FFFFFF" },
 });
+
+export const Sprint = mongoose.model("Sprint", sprintSchema);

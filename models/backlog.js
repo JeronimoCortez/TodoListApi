@@ -8,3 +8,5 @@ const backlogSchema = mongoose.Schema({
     },
   ],
 });
+
+export const Backlog = mongoose.model("Backlog", backlogSchema);
