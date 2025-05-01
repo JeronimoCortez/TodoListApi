@@ -1,9 +1,10 @@
+import { Backlog } from "../models/backlog.js";
 import { Sprint } from "../models/sprint.js";
 import { Task } from "../models/task.js";
 
 export const getSprints = async (req, res) => {
   try {
-    const sprints = await Sprint.find();
+    const sprints = await Sprint.find().populate("tasks");
     if (sprints.length === 0) {
       return res
         .status(204)
@@ -115,4 +116,29 @@ export const addTaskToSprint = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error });
   }
+};
+
+export const postTaskSprintToBacklog = async (req, res) => {
+  try {
+    const { idTask, idSprint } = req.params;
+    const task = await Task.findOne({ id: idTask });
+    const sprint = await Sprint.findOne({ id: idSprint });
+    const backlog = await Backlog.findOne();
+
+    if (!task || !sprint || !backlog) {
+      return res.status(404).json({ message: "Datos no encontrados" });
+    }
+
+    sprint.tasks = sprint.tasks.filter((taskId) => !taskId.equals(task._id));
+    await sprint.save();
+
+    if (!backlog.tasks.includes(task._id)) {
+      backlog.tasks.push(task._id);
+      await backlog.save();
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Tarea enviada al backlog exitosamente" });
+  } catch (error) {}
 };

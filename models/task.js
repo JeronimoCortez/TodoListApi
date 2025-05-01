@@ -4,14 +4,14 @@ const taskSchema = mongoose.Schema({
   id: { type: String, required: true },
   titulo: { type: String, required: [true, "El titulo es obligatorio"] },
   descripcion: String,
-  estado: {
-    type: String,
-    enum: ["PENDIENTE", "EN_PROGRESO", "COMPLETADO"],
-    default: "PENDIENTE",
-  },
   fechaLimite: {
     type: String,
     required: [true, "La fecha limite es obligatoria"],
+  },
+  estado: {
+    type: Number,
+    enum: [0, 1, 2],
+    default: 0,
   },
 });
 

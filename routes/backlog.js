@@ -2,6 +2,7 @@ import express from "express";
 import {
   getBacklog,
   postBacklog,
+  postTaskBacklogToSprint,
   putTaskToBacklog,
 } from "../controllers/backlogController.js";
 
@@ -12,3 +13,5 @@ backlogRouter.get("/", getBacklog);
 backlogRouter.post("/", postBacklog);
 
 backlogRouter.put("/addTask/:idTask", putTaskToBacklog);
+
+backlogRouter.put("/taskToSprint/:idTask/:idSprint", postTaskBacklogToSprint);

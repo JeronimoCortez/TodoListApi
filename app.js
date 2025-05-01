@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
 import { taskRouter } from "./routes/task.js";
 import { sprintRouter } from "./routes/sprint.js";
 import { backlogRouter } from "./routes/backlog.js";
@@ -19,6 +20,7 @@ mongoose
     console.log("Error al conectarse a la base de datos: ", error);
   });
 
+app.use(cors());
 app.use("/task", taskRouter);
 app.use("/sprint", sprintRouter);
 app.use("/backlog", backlogRouter);

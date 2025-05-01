@@ -33,8 +33,9 @@ export const getTask = async (req, res) => {
 export const createTask = async (req, res) => {
   try {
     const { id, titulo, descripcion, estado, fechaLimite } = req.body;
+    console.log(req.body);
 
-    if (!id || !titulo || !estado || !fechaLimite) {
+    if (!id || !titulo || !fechaLimite || estado === undefined) {
       return res
         .status(400)
         .json({ message: "Debe enviar los campos obligatorios" });
@@ -45,8 +46,10 @@ export const createTask = async (req, res) => {
       titulo,
       descripcion,
       estado,
-      fechaLimite,
+      fechaLimite: new Date(fechaLimite),
     });
+
+    console.log(task);
 
     const data = await task.save();
     return res.status(201).json(data);
@@ -79,10 +82,10 @@ export const deleteTask = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedTask = Task.findByIdAndDeleted(id);
+    const deletedTask = await Task.findOneAndDelete({ id: id });
 
     if (!deletedTask) {
-      return res.status(204).json({ message: "Tarea no encontrada" });
+      return res.status(404).json({ message: "Tarea no encontrada" });
     }
 
     return res.status(201).json(deletedTask);
